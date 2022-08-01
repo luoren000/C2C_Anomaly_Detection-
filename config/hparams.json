@@ -77,7 +77,7 @@
         "shuffle_buffer_size": {
             "type": "Discrete",
             "values": [
-                10000
+                16819
             ]
         },
         "step_log_frequency": {
