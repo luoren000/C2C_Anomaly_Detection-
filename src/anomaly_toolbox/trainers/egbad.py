@@ -183,7 +183,7 @@ class EGBAD(Trainer):
                 x, labels_test = batch
 
                 # Get the anomaly scores
-                anomaly_scores = self._compute_anomaly_scores(
+                anomaly_scores,y_pred = self._compute_anomaly_scores(
                     x, self.encoder, self.generator, self.discriminator
                 )
 
@@ -312,23 +312,37 @@ class EGBAD(Trainer):
 
             # Resetting the state of the AUPRC variable
             self._auc_rc.reset_states()
+            A = tf.keras.metrics.BinaryAccuracy()
+            R = tf.keras.metrics.Recall()
+            P = tf.keras.metrics.Precision()
 
             # Test on the test dataset
             for batch in self._dataset.test:
                 x, labels_test = batch
 
-                anomaly_scores = self._compute_anomaly_scores(
+                anomaly_scores,y_pred = self._compute_anomaly_scores(
                     x, encoder, generator, discriminator
                 )
 
                 self._auc_rc.update_state(labels_test, anomaly_scores)
                 self._auc_roc.update_state(labels_test, anomaly_scores)
 
+                A.update_state(labels_test, y_pred)
+                R.update_state(labels_test, y_pred)
+                P.update_state(labels_test, y_pred)
+            accuracy = A.result.numpy()
+            recall = R.result.numpy()
+            precision = P.result.numpy()
+            A.reset_states()
+            R.reset_states()
+            P.reset_states()
+
             auc_rc = self._auc_rc.result()
             auc_roc = self._auc_roc.result()
 
             tf.print("Best AUPRC on test set: ", auc_rc)
             tf.print("Best AUCROC on test set: ", auc_roc)
+            tf.print(f"Accuracy:{accuracy}, Recall:{recall}, Precision:{precision}")
 
             base_path = self._log_dir / "results" / metric
 
@@ -363,8 +377,9 @@ class EGBAD(Trainer):
         e_x = encoder.call(x, training=False)
         g_ex = generator.call(e_x, training=False)
 
-        _, x_features = discriminator([x, e_x], training=False)
-        _, ex_features = discriminator([g_ex, e_x], training=False)
+        x_pred, x_features = discriminator([x, e_x], training=False)
+        ex_pred, ex_features = discriminator([g_ex, e_x], training=False)
+        x_pred_labels = tf.round(tf.nn.sigmoid(x_pred))
 
         g_score = tf.norm(
             k.layers.Flatten()(residual_loss(x, g_ex)), axis=1, keepdims=False
@@ -383,4 +398,4 @@ class EGBAD(Trainer):
             self._alpha * d_score + (1.0 - self._alpha) * g_score
         )
 
-        return normalized_anomaly_scores
+        return normalized_anomaly_scores, x_pred_labels
