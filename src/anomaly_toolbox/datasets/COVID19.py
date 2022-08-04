@@ -50,7 +50,7 @@ class COVID19(AnomalyDetectionDataset):
     5000 images for testing (balanced).
     """
 
-    def __init__(self, path: Path = Path("/Users/luoren000/Documents/luoren000/Anomaly_detection/COVID-19_Radiography_Dataset/")):
+    def __init__(self, path: Path = Path("/projects/care-to-cure/Anomaly-detection-POD1/covid19/COVID-19_Radiography_Dataset/")):
         super().__init__()
         self._path = path
 
@@ -78,7 +78,7 @@ class COVID19(AnomalyDetectionDataset):
 
         all_anomalous = glob(str(self._path / "COVID/images" / glob_ext))
         all_anomalous += glob(str(self._path / "Lung_Opacity/images" / glob_ext))
-        all_anomalous += glob(str(self._path / "Viral Pneumonia/images" / glob_ext))
+        #all_anomalous += glob(str(self._path / "Viral Pneumonia/images" / glob_ext))
         random.shuffle(all_anomalous)
         all_anomalous_train = all_anomalous[:int(len(all_anomalous) * 0.8)]
         all_anomalous_test = all_anomalous[int(len(all_anomalous) * 0.8):int(len(all_anomalous) * 0.9)]
@@ -256,7 +256,7 @@ class COVID19(AnomalyDetectionDataset):
 # # data = np.asarray(img)
 # # print(len(data.shape))
 '''f = ['COVID','Lung_Opacity','Normal','Viral Pneumonia']
-path = Path("/Users/luoren000/Documents/luoren000/Anomaly_detection/COVID-19_Radiography_Dataset/")
+path = Path("/projects/care-to-cure/Anomaly-detection-POD1/covid19/COVID-19_Radiography_Dataset/")
 broken = []
 for i in f:
     for filename in os.scandir(str(path/'{}/images'.format(i))):
