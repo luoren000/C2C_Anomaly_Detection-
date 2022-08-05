@@ -43,7 +43,7 @@ class EGBADExperiment(Experiment):
             list(self.hyperparameters().union(EGBAD.hyperparameters())),
         )
 
-    def experiment1(
+    def experiment(
         self, hps: Dict, log_dir: Path, dataset: AnomalyDetectionDataset
     ) -> None:
         """Experiment execution - architecture specific.
@@ -84,42 +84,6 @@ class EGBADExperiment(Experiment):
         # training for the model selection)
         trainer.test()
 
-    def experiment(
-        self, hps: Dict, log_dir: Path, dataset: AnomalyDetectionDataset
-    ) -> None:
-        """Experiment execution - architecture specific.
-        Args:
-            hps: Dictionary with the parameters to use for the current run.
-            log_dir: Where to store the tensorboard logs.
-            dataset: The dataset to use for model training and evaluation.
-        """
-        print("Running EGBAD experiment...")
-
-        summary_writer = tf.summary.create_file_writer(str(log_dir))
-        new_size = (28, 28)
-
-        # Create the dataset with the requested sizes (requested by the model architecture)
-        dataset.configure(
-            anomalous_label=hps["anomalous_label"],
-            class_label=hps["class_label"],
-            batch_size=hps["batch_size"],
-            new_size=new_size,
-            shuffle_buffer_size=hps["shuffle_buffer_size"],
-        )
-
-        # Create the EGBAD trainer
-        trainer = EGBAD(
-            dataset=dataset,
-            hps=hps,
-            summary_writer=summary_writer,
-            log_dir=log_dir,
-        )
-
-        # Train the EGBAD model
-
-        # Test on test dataset and put the results in the json file (the same file used inside the
-        # training for the model selection)
-        trainer.test()
 
 experiment_instance = EGBADExperiment(hparams_path='/projects/care-to-cure/Anomaly-detection-POD1/codes/Renpin_Luo/C2C_Anomaly_Detection-/config/hparams.json', log_dir=Path('/projects/care-to-cure/Anomaly-detection-POD1/codes/Renpin_Luo/C2C_Anomaly_Detection-/logs/EGBADExperiment'))
 coviddataset = COVID19()
