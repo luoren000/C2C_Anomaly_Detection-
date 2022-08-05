@@ -112,6 +112,7 @@ class EGBAD(Trainer):
 
         self._minmax = AdversarialLoss(from_logits=True)
         self._flatten = k.layers.Flatten()
+        print("fuck you !!!!!!!!!!!!!!!!!!!!")
 
     @staticmethod
     def hyperparameters() -> Set[str]:
@@ -300,6 +301,8 @@ class EGBAD(Trainer):
         Args:
             base_path: the path to use for loading the models. If None, the default is used.
         """
+        
+        print("fuck you again !!!!!!!!!!!!!!!!!!!!!!!")
 
         for metric in ["auc_rc", "auc_roc"]:
             if not base_path:
