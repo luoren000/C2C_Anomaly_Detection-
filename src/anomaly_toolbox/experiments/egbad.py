@@ -86,6 +86,9 @@ class EGBADExperiment(Experiment):
 
 
 experiment_instance = EGBADExperiment(hparams_path='/projects/care-to-cure/Anomaly-detection-POD1/codes/Renpin_Luo/C2C_Anomaly_Detection-/config/hparams.json', log_dir=Path('/projects/care-to-cure/Anomaly-detection-POD1/codes/Renpin_Luo/C2C_Anomaly_Detection-/logs/EGBADExperiment'))
+print("check111111111111111111")
 coviddataset = COVID19()
+print("check222222222222222")
 experiment_instance.run(hparams_tuning=False, hparams_func=grid_search, dataset=coviddataset)
+print("check333333333333333")
 
