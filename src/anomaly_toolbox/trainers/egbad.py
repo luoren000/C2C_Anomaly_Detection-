@@ -102,6 +102,9 @@ class EGBAD(Trainer):
                 self.epoch_e_loss_avg,
                 self._auc_rc,
                 self._auc_roc,
+                self.A,
+                self.R,
+                self.P
             ]
         }
 
