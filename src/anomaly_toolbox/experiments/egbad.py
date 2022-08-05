@@ -52,7 +52,7 @@ class EGBADExperiment(Experiment):
             log_dir: Where to store the tensorboard logs.
             dataset: The dataset to use for model training and evaluation.
         """
-        print("Running EGBAD experiment...")
+        print("Running EGBAD experiment again...")
 
         summary_writer = tf.summary.create_file_writer(str(log_dir))
         new_size = (28, 28)
