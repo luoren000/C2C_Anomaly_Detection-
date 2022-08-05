@@ -73,6 +73,8 @@ class EGBADExperiment(Experiment):
             summary_writer=summary_writer,
             log_dir=log_dir,
         )
+        
+        print("not ok")
 
         # Train the EGBAD model
         '''trainer.train(
