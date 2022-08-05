@@ -204,10 +204,10 @@ class EGBAD(Trainer):
                 best_auc_rc = current_auc_rc
 
                 base_path = self._log_dir / "results" / "auc_rc"
-                self.generator.save(str(base_path / "generator"), overwrite=True)
-                self.encoder.save(str(base_path / "encoder"), overwrite=True)
+                self.generator.save(str(base_path / "generator.h5"), overwrite=True)
+                self.encoder.save(str(base_path / "encoder.h5"), overwrite=True)
                 self.discriminator.save(
-                    str(base_path / "discriminator"), overwrite=True
+                    str(base_path / "discriminator.h5"), overwrite=True
                 )
 
                 with open(base_path / "validation.json", "w") as fp:
@@ -227,10 +227,10 @@ class EGBAD(Trainer):
                 best_auc_rc = current_auc_roc
 
                 base_path = self._log_dir / "results" / "auc_roc"
-                self.generator.save(str(base_path / "generator"), overwrite=True)
-                self.encoder.save(str(base_path / "encoder"), overwrite=True)
+                self.generator.save(str(base_path / "generator.h5"), overwrite=True)
+                self.encoder.save(str(base_path / "encoder.h5"), overwrite=True)
                 self.discriminator.save(
-                    str(base_path / "discriminator"), overwrite=True
+                    str(base_path / "discriminator.h5"), overwrite=True
                 )
 
                 with open(base_path / "validation.json", "w") as fp:
@@ -301,16 +301,16 @@ class EGBAD(Trainer):
         for metric in ["auc_rc", "auc_roc"]:
             if not base_path:
                 base_path = self._log_dir / "results" / metric
-            encoder_path = base_path / "encoder"
-            generator_path = base_path / "generator"
-            discriminator_path = base_path / "discriminator"
+            encoder_path = base_path / "encoder.h5"
+            generator_path = base_path / "generator.h5"
+            discriminator_path = base_path / "discriminator.h5"
 
             # Load the best models to use as the model here
-            encoder = tf.keras.models.load_model(encoder_path,compile=False)
+            encoder = tf.keras.models.load_model(encoder_path)
             encoder.summary()
-            generator = tf.keras.models.load_model(generator_path.compile=False)
+            generator = tf.keras.models.load_model(generator_path)
             generator.summary()
-            discriminator = tf.keras.models.load_model(discriminator_path,compile=False)
+            discriminator = tf.keras.models.load_model(discriminator_path)
             discriminator.summary()
 
             # Resetting the state of the AUPRC variable
