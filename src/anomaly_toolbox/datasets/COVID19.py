@@ -71,7 +71,7 @@ class COVID19(AnomalyDetectionDataset):
         all_normal_train = all_normal[:int(len(all_normal) * 0.8)]
         all_normal_test = all_normal[int(len(all_normal) * 0.8):int(len(all_normal) * 0.9)]
         all_normal_validation = all_normal[int(len(all_normal) * 0.9):]
-        print(len(all_normal_train), len(all_normal_test), len(all_normal_validation))
+        print("check",len(all_normal_train), len(all_normal_test), len(all_normal_validation))
         # all_normal_train = all_normal[:10000]
         # all_normal_test = all_normal[10000:15000]
         # all_normal_validation = all_normal[15000:]

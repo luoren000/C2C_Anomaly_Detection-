@@ -16,7 +16,8 @@
 
 from pathlib import Path
 from typing import Dict
-
+import sys
+sys.path.insert(0,'/projects/care-to-cure/Anomaly-detection-POD1/codes/Renpin_Luo/C2C_Anomaly_Detection-/src/anomaly_toolbox/datasets')
 import tensorflow as tf
 
 from anomaly_toolbox.datasets.dataset import AnomalyDetectionDataset
@@ -24,7 +25,7 @@ from anomaly_toolbox.experiments.experiment import Experiment
 from anomaly_toolbox.hps import hparam_parser
 from anomaly_toolbox.trainers import EGBAD
 from anomaly_toolbox.hps import grid_search
-from anomaly_toolbox.datasets.COVID19 import COVID19
+from COVID19 import COVID19
 
 
 class EGBADExperiment(Experiment):
@@ -120,7 +121,7 @@ class EGBADExperiment(Experiment):
         # training for the model selection)
         trainer.test()
 
-experiment_instance = EGBADExperiment(hparams_path='/projects/care-to-cure/Anomaly-detection-POD1/codes/Renpin_Luo/C2C_Anomaly_Detection-/config/hparams.json', log_dir='/projects/care-to-cure/Anomaly-detection-POD1/codes/Renpin_Luo/C2C_Anomaly_Detection-/logs/EGBADExperiment')
+experiment_instance = EGBADExperiment(hparams_path='/projects/care-to-cure/Anomaly-detection-POD1/codes/Renpin_Luo/C2C_Anomaly_Detection-/config/hparams.json', log_dir=Path('/projects/care-to-cure/Anomaly-detection-POD1/codes/Renpin_Luo/C2C_Anomaly_Detection-/logs/EGBADExperiment'))
 coviddataset = COVID19()
 experiment_instance.run(hparams_tuning=False, hparams_func=grid_search, dataset=coviddataset)
 

@@ -303,11 +303,11 @@ class EGBAD(Trainer):
             discriminator_path = base_path / "discriminator"
 
             # Load the best models to use as the model here
-            encoder = tf.keras.models.load_model(encoder_path)
+            encoder = tf.keras.models.load_model(encoder_path,compile=False)
             encoder.summary()
-            generator = tf.keras.models.load_model(generator_path)
+            generator = tf.keras.models.load_model(generator_path.compile=False)
             generator.summary()
-            discriminator = tf.keras.models.load_model(discriminator_path)
+            discriminator = tf.keras.models.load_model(discriminator_path,compile=False)
             discriminator.summary()
 
             # Resetting the state of the AUPRC variable
@@ -330,19 +330,19 @@ class EGBAD(Trainer):
                 A.update_state(labels_test, y_pred)
                 R.update_state(labels_test, y_pred)
                 P.update_state(labels_test, y_pred)
-            accuracy = A.result.numpy()
-            recall = R.result.numpy()
-            precision = P.result.numpy()
-            A.reset_states()
-            R.reset_states()
-            P.reset_states()
+            print(A.result().numpy())
+                 
+            accuracy = A.result().numpy()
+            recall = R.result().numpy()
+            precision = P.result().numpy()
 
             auc_rc = self._auc_rc.result()
             auc_roc = self._auc_roc.result()
+            tf.print("fuck you!!!!!!")
 
             tf.print("Best AUPRC on test set: ", auc_rc)
             tf.print("Best AUCROC on test set: ", auc_roc)
-            tf.print(f"Accuracy:{accuracy}, Recall:{recall}, Precision:{precision}")
+            tf.print(f"Accuracy:{}, Recall:{}, Precision:{}")
 
             base_path = self._log_dir / "results" / metric
 
@@ -353,6 +353,9 @@ class EGBAD(Trainer):
                 },
                 "auc_roc": {
                     "value": float(auc_roc),
+                },
+                "accuracy": {
+                    "value": float(accuracy),
                 },
             }
 

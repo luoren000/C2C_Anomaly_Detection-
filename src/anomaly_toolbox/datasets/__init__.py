@@ -19,6 +19,7 @@ from .dataset import AnomalyDetectionDataset
 from .mnist import MNIST
 from .mvtecad import MVTecAD
 from .surface_cracks import SurfaceCracks
+from .COVID19 import COVID19
 
 __all__ = [
     "MNIST",
@@ -26,5 +27,6 @@ __all__ = [
     "SurfaceCracks",
     "AnomalyDetectionDataset",
     "MVTecAD",
+    "COVID19"
 ]
-__datasets__ = ["MNIST", "CorruptedMNIST", "SurfaceCracks", "MVTecAD"]
+__datasets__ = ["MNIST", "CorruptedMNIST", "SurfaceCracks", "MVTecAD","COVID19"]
