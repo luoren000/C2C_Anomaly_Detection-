@@ -75,10 +75,10 @@ class EGBADExperiment(Experiment):
         )
 
         # Train the EGBAD model
-        trainer.train(
+        '''trainer.train(
             epochs=hps["epochs"],
             step_log_frequency=hps["step_log_frequency"],
-        )
+        )'''
 
         # Test on test dataset and put the results in the json file (the same file used inside the
         # training for the model selection)
