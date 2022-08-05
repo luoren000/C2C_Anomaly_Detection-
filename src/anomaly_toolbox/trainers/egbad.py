@@ -90,6 +90,9 @@ class EGBAD(Trainer):
         self.epoch_e_loss_avg = k.metrics.Mean(name="epoch_encoder_loss")
         self._auc_rc = k.metrics.AUC(name="auc_rc", curve="PR", num_thresholds=500)
         self._auc_roc = k.metrics.AUC(name="auc_roc", curve="ROC", num_thresholds=500)
+        self.A = tf.keras.metrics.BinaryAccuracy()
+        self.R = tf.keras.metrics.Recall()
+        self.P = tf.keras.metrics.Precision()
 
         self.keras_metrics = {
             metric.name: metric
@@ -312,9 +315,10 @@ class EGBAD(Trainer):
 
             # Resetting the state of the AUPRC variable
             self._auc_rc.reset_states()
-            A = tf.keras.metrics.BinaryAccuracy()
-            R = tf.keras.metrics.Recall()
-            P = tf.keras.metrics.Precision()
+            self.A.reset_states()
+            self.R.reset_states()
+            self.P.reset_states()
+
 
             # Test on the test dataset
             for batch in self._dataset.test:
@@ -327,22 +331,21 @@ class EGBAD(Trainer):
                 self._auc_rc.update_state(labels_test, anomaly_scores)
                 self._auc_roc.update_state(labels_test, anomaly_scores)
 
-                A.update_state(labels_test, y_pred)
-                R.update_state(labels_test, y_pred)
-                P.update_state(labels_test, y_pred)
-            print(A.result().numpy())
+                self.A.update_state(labels_test, y_pred)
+                self.R.update_state(labels_test, y_pred)
+                self.P.update_state(labels_test, y_pred)
+         
                  
-            accuracy = A.result().numpy()
-            recall = R.result().numpy()
-            precision = P.result().numpy()
+            accuracy = self.A.result()
+            recall = self.R.result()
+            precision = self.P.result()
 
             auc_rc = self._auc_rc.result()
             auc_roc = self._auc_roc.result()
-            tf.print("fuck you!!!!!!")
 
             tf.print("Best AUPRC on test set: ", auc_rc)
             tf.print("Best AUCROC on test set: ", auc_roc)
-            tf.print(f"Accuracy:{}, Recall:{}, Precision:{}")
+            tf.print("Accuracy: ", accuracy,", Recall: ", recall,", Precision: ", precision)
 
             base_path = self._log_dir / "results" / metric
 
